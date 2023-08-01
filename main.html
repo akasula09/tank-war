@@ -2,10 +2,11 @@
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
-    <title>tank.html</title>
-    <script type="text/javascript" src="functions.js"></script>
+    <title>Tank War (2 player)</title>
+    <script type="text/javascript" src="sprite.js"></script>
+    
     <script type = "text/javascript">
-        var ball;
+        var blueTank;
         var goldTank;
         var missiles = [];
         var explosions = [];
@@ -63,9 +64,9 @@
 
      function update() {
     scene.clear();
-    if (ball.health > 0) {
-        ball.update();
-        ball.draw(scene.ctx);
+    if (blueTank.health > 0) {
+        blueTank.update();
+        blueTank.draw(scene.ctx);
     }
     if (goldTank.health > 0) {
         goldTank.update();
@@ -82,8 +83,8 @@
             // add explosion
             let explosion = new Explosion(missile.x, missile.y);
             explosions.push(explosion);
-        } else if (missile.direction === 1 && ball.collidesWith(missile)) {
-            ball.health -= 10;
+        } else if (missile.direction === 1 && blueTank.collidesWith(missile)) {
+            blueTank.health -= 10;
             missiles.splice(i, 1);
             i--;
             // add explosion
@@ -105,9 +106,9 @@
 
         function init() {
             scene = new Scene(update);
-            ball = new Sprite(scene, "blueTank.png", 100, 100,"arrows");
-            ball.x = (scene.width - ball.width) / 2;
-            ball.y = (scene.height - ball.height) / 2;
+            blueTank = new Sprite(scene, "blueTank.png", 100, 100,"arrows");
+            blueTank.x = (scene.width - blueTank.width) / 2;
+            blueTank.y = (scene.height - blueTank.height) / 2;
 
             goldTank = new Sprite(scene, "goldTank.png", 100, 100,"wasd");
             goldTank.x = (scene.width - goldTank.width) / 4;
@@ -118,9 +119,9 @@ let ctx = canvas.getContext("2d");
 
 document.addEventListener("keydown", (event) => {
     if (event.code === "Space") {
-        let missile = new Missile(ball.x + ball.width / 2, ball.y + ball.height / 2, -1);
+        let missile = new Missile(blueTank.x + blueTank.width / 2, blueTank.y + blueTank.height / 2, -1);
         missiles.push(missile);
-    } else if (event.code === "Enter") {
+    } else if (event.code === "Tab") {
         let missile = new Missile(goldTank.x + goldTank.width / 2, goldTank.y + goldTank.height / 2, 1);
         missiles.push(missile);
     }
@@ -130,23 +131,94 @@ canvas.addEventListener("mousemove", (event) => {
     let rect = canvas.getBoundingClientRect();
     let mouseX = event.clientX - rect.left;
     let mouseY = event.clientY - rect.top;
-    let dx = mouseX - (ball.x + ball.width / 2);
-    let dy = mouseY - (ball.y + ball.height / 2);
-    ball.moveAngle = Math.atan2(dy, dx);
+    let dx = mouseX - (blueTank.x + blueTank.width / 2);
+    let dy = mouseY - (blueTank.y + blueTank.height / 2);
+    blueTank.moveAngle = Math.atan2(dy, dx);
 });
 
            
             scene.start();
         }
 document.addEventListener("keydown", (event) => {
-    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) {
+    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown","Tab","Space"].includes(event.key)) {
         event.preventDefault();
     }
 });
+window.onscroll = function() {
+    window.scrollTo(0, 0);
+}
+
 
     </script>
 </head>
 <body onload="init()" bgcolor="#000000">
+<div class = "intro-cont">
+    <p><span>Tank</span>
+          <span> War</span>
+          <span>Game</span>
+                                            </p>
+    </div>
+    <style>
+    .intro-cont{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+		top: 50px;
+		transform: skew(-7deg);
+		animation: move 2s infinite 0s;
+	}
+
+		@keyframes move{
+		0%{
+			top: 50px;
+		}
+		50%{
+			top: 90px;
+		}
+		100%{
+			top: 50px;
+		}
+	}
+
+	.intro-cont p{
+		font-size: 3.5rem;
+		font-family: comic sans ms;
+		color: #fff;
+		text-shadow: 1px 1px 0 #ccc,
+					 2px 2px 0 #ccc,
+					 3px 3px 0 #ccc,
+					 4px 4px 0 #ccc,
+					 5px 5px 0 #ccc,
+					 10px 10px 0 #000;
+	}
+	.intro-cont p > span:nth-of-type(1){
+		color: red;
+		text-shadow: 1px 1px 0 darkred,
+					 2px 2px 0 darkred,
+					 3px 3px 0 darkred,
+					 4px 4px 0 darkred,
+					 5px 5px 0 darkred,
+					 10px 10px 0 #000;
+	}
+	.intro-cont p > span:nth-of-type(2){
+		color: green;
+		text-shadow: 1px 1px 0 darkgreen,
+					 2px 2px 0 darkgreen,
+					 3px 3px 0 darkgreen,
+					 4px 4px 0 darkgreen,
+					 5px 5px 0 darkgreen,
+					 10px 10px 0 #000;
+	}
+             </style>  
 <canvas id="canvas"></canvas>
 </body>
 </html>
+
+                
+                
+   
+
+       
+    
+
